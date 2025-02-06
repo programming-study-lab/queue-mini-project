@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ui_queue/View/AppbarView/AppBar.dart';
 import 'package:ui_queue/View/LoginView/LoginPage.dart';
 import 'package:ui_queue/View/MenuView/MenuBar.dart';
+import 'package:ui_queue/View/ShowQueue/ShowQueue.dart';
 import 'package:ui_queue/process/Queue.dart';
 import 'package:ui_queue/ShareData/UserData.dart';
 
@@ -17,7 +19,12 @@ class HomePageState extends State<HomePage> {
   var ctl = TextEditingController();
   // UserData userData = UserData();
   String data = '';
-  String display = '';
+  String display = 'คิวว่าง';
+
+  Future<void> readQueue() async {
+    String queue_data = await rootBundle.loadString(q.peekAll().toString());
+    print(queue_data);
+  }
 
 
   @override
@@ -30,17 +37,19 @@ class HomePageState extends State<HomePage> {
               // Image.asset('assets/11021.jpg',
               //   fit: BoxFit.cover,height: 200,width: 1800,),
               display_home(),
+              // display_AllQuque(),
+
               SizedBox(height: 200, width: 1200,),
               column2(),
               input_name(),
               enQueue(), deQueue(),
-              ElevatedButton(onPressed: ()=>{}, child: Text('test')),
+              queeu_all(),
               SizedBox(height: 25,),
               column3(),
               SizedBox(height: 25,)
             ],
           ),
-      ),
+      ),drawer: menu_bar(context)
   );
 
   Widget column2() => Row(
@@ -49,7 +58,7 @@ class HomePageState extends State<HomePage> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Test',
+          Text('ชื่อในการจองคิว',
             textScaler: TextScaler.linear(1.5),
             style: TextStyle(
               color: Colors.green,
@@ -74,7 +83,6 @@ class HomePageState extends State<HomePage> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          enQueue(),
         ],
       ),
     ],
@@ -92,7 +100,7 @@ class HomePageState extends State<HomePage> {
 
   Widget deQueue() => OutlinedButton(
     onPressed: () => setState(() {
-      display = q.dequeue();
+      (q.isEmpty())?display == 'รอคิว...': display = q.dequeue() ;
     }),
     child: Text('เรียกคิว'),
     style: TextButton.styleFrom(
@@ -102,6 +110,10 @@ class HomePageState extends State<HomePage> {
 
   Widget display_home() => Text(
       'คิวของ: ${display}', textScaler: TextScaler.linear(5),
+  );
+
+  Widget display_AllQuque() => Text(
+    'คิวทั้งหมด: ${show_queue()}', textScaler: TextScaler.linear(2),
   );
 
   Widget input_name() => TextField(
@@ -116,12 +128,24 @@ class HomePageState extends State<HomePage> {
     })
   );
 
-  Widget list_view() => ListView(
-      padding: EdgeInsets.all(15),
-
-
+  Widget show_queue() => ListView.builder(
+    itemCount: 10,
+    itemBuilder: (context, index) => Card(
+      elevation: 10,
+      shape: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black12)
+      ),
+      child: ListTile(
+        title: Text('data'),
+      ),
+    ),
   );
 
+  Widget queeu_all() => TextButton(
+      onPressed: () => {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ShowQueue()))},
+      child: Text("คิวที่เหลือทั้งหมด"));
 
 }
 

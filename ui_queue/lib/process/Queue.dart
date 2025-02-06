@@ -5,7 +5,6 @@ String test(){
   print (a);
 
 
-
   return "";
 }
 
@@ -24,7 +23,7 @@ class Queue {
   }
 
   bool isEmpty() {
-    return this.rear == -1 || this.front == -1;
+    return (this.rear == -1) || (this.front == -1);
   }
 
   bool isFull(dynamic data) {
@@ -49,12 +48,12 @@ class Queue {
   }
 
   String dequeue(){
-    String queue = "";
+    String queue = "คิวว่าง";
     if (this.front != -1) {
       if (this.front > this.rear) {
         this.front = -1;
         this.rear = -1;
-        queue = "ไม่มีคิว";
+        queue = "คิวว่าง";
       } else {
         queue = this.data[this.front].toString();
         print(queue);
@@ -65,9 +64,6 @@ class Queue {
   }
 
   String peek() {
-
-    // this.data = [1,2,3,4,5];
-    // this.data.toString();
     if (this.isEmpty()) {
       return "คิวว่าง";
     } else {
@@ -75,21 +71,19 @@ class Queue {
     }
   }
 
-  String peekAll() {
+  List peekAll() {
+    print("PeeKAll: ${this.data.length}");
     if (this.isEmpty()) {
-      return "คิวว่าง";
+      return this.data;
     } else {
       int index = this.front;
       if(index > this.rear) {
         print ("คิวว่าง");
       } else {
-        while (index <= this.rear) {
-          return this.data.toString();
-          index += 1;
-        }
+       return this.data;
       }
     }
-    return "";
+    return this.data;
   }
 
   // String display() {

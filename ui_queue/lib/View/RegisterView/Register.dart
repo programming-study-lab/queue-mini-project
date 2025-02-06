@@ -8,6 +8,7 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
+  var phone
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text('Register'),),
     body: Container(
@@ -47,7 +48,7 @@ class RegisterState extends State<Register> {
     ),
   );
 
-  Widget submit_button() => TextButton(
+  Widget submit_button() => OutlinedButton(
       onPressed: () => {
         Navigator.push(
             context, MaterialPageRoute(

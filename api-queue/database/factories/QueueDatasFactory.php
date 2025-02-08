@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Validation\Rules\Unique;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\QueueDatas>
@@ -22,7 +23,7 @@ class QueueDatasFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'type' => fake()->name(),
             'queue_status' => fake()->boolean(),
-            'queue_number' => fake()->boolean(),
+            'queue_number' => fake()->randomNumber(3)
         ];
     }
 }

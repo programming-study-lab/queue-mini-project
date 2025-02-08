@@ -8,15 +8,17 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
-  var phone
+  // var phone
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text('Register'),),
+    appBar: AppBar(title: Text('เข้าคิว',),),
     body: Container(
       child: Column(
         children: [
           phone_number(),
           first_name_text(),
           last_name_text(),
+          user_type(),
+          SizedBox(height: 20,),
           submit_button()
         ],
       ),
@@ -48,7 +50,28 @@ class RegisterState extends State<Register> {
     ),
   );
 
-  Widget submit_button() => OutlinedButton(
+  // Widget user_type() => TextField(
+  //   controller: TextEditingController(),
+  //   decoration: InputDecoration(
+  //       hintText: 'กลุ่มตามเงื่อนไขของรัฐบาล',
+  //       border: OutlineInputBorder()
+  //   ),
+  // );
+
+  Widget user_type() {
+    final type = ['กลุ่มผู้สูงอายุ','กลุ่มผู้มีรายได้น้อย','กลุ่มเกษตรกร'];
+    return DropdownButtonFormField(
+        items: type.map((e) {
+          return DropdownMenuItem(child: Text(e), value: e,);
+        },).toList(),
+        decoration: InputDecoration(
+          hintText: "คลิกเพื่อเลือกกลุ่มตามเงื่อนไขของรัฐบาล"
+        ),
+        onChanged: (v) {}
+    );
+  }
+
+  Widget submit_button() => ElevatedButton(
       onPressed: () => {
         Navigator.push(
             context, MaterialPageRoute(
@@ -57,4 +80,6 @@ class RegisterState extends State<Register> {
         )
       },
       child: Text("ลงทะเบียน"));
+
+
 }

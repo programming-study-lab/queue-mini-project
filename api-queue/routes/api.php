@@ -25,4 +25,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route :: group(['prefix' => 'v1'], function(){
     Route :: post ('/register',[AuthController::class, "register"]);
     Route :: get('/queue', [AuthController::class, "queue"]);
+    Route :: get('/test', [AuthController::class, "test"]);
 });

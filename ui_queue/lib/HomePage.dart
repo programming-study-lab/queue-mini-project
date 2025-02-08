@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ui_queue/View/AppbarView/AppBar.dart';
 import 'package:ui_queue/View/LoginView/LoginPage.dart';
 import 'package:ui_queue/View/MenuView/MenuBar.dart';
+import 'package:ui_queue/View/RegisterView/Register.dart';
 import 'package:ui_queue/View/ShowQueue/ShowQueue.dart';
 import 'package:ui_queue/process/Queue.dart';
 import 'package:ui_queue/ShareData/UserData.dart';
@@ -45,11 +46,11 @@ class HomePageState extends State<HomePage> {
               enQueue(), deQueue(),
               queeu_all(),
               SizedBox(height: 25,),
-              column3(),
+              column3(),routeRegisterPage(),
               SizedBox(height: 25,)
             ],
           ),
-      ),drawer: menu_bar(context)
+      ),drawer: menu_bar(context),
   );
 
   Widget column2() => Row(
@@ -146,6 +147,20 @@ class HomePageState extends State<HomePage> {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => ShowQueue()))},
       child: Text("คิวที่เหลือทั้งหมด"));
+
+  Widget routeRegisterPage() {
+    return FloatingActionButton.extended(
+        onPressed: navigatorToAddPage,
+        label: Text("เข้าคิว", textScaler: TextScaler.linear(1.5),),
+    );
+  }
+
+  void navigatorToAddPage() {
+    final route = MaterialPageRoute(
+        builder: (context) => Register(),
+    );
+    Navigator.push(context, route);
+  }
 
 }
 

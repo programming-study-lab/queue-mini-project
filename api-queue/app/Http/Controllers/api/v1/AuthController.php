@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function register(Request $request) {
-        $validator = Validator::make($request->all(),[ //เป็นคลาสของ Laravel
-            'first_name' => 'string|max:5',
-            'last_name' => 'string|nullable',
-            'phone' => 'string|nullable',
-            'type' => 'string|nullable',
-            'queue_status' => 'nullable',
-            'queue_number' => 'nullable',
-        ]);
+        // $validator = Validator::make($request->all(),[ //เป็นคลาสของ Laravel
+        //     'first_name' => 'string|max:5',
+        //     'last_name' => 'string|nullable',
+        //     'phone' => 'string|nullable',
+        //     'type' => 'string|nullable',
+        //     'queue_status' => 'nullable',
+        //     'queue_number' => 'nullable',
+        // ]);
 
         $first_name = $request->first_name;
         $last_name = $request->last_name;
@@ -27,24 +27,35 @@ class AuthController extends Controller
         $queue_status = $request->queue_status;
         $queue_number = $request->queue_number;
 
-        if ($validator->fails()) {
-            return response()->json([
-                $validator->errors()
-            ]);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         $validator->errors()
+        //     ]);
+        // }
 
-        if ($last_name == null) {
-            $last_name = "";
-        }
+        // if ($last_name == null) {
+        //     $last_name = "";
+        // }
 
-        $queue = QueueDatas::create([
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'phone' => $phone,
-            'type' => $type,
-            'queue_status' => $queue_status,
-            'queue_number' => $queue_number,
-        ]);
+        // $data = [
+        //     'first_name' => $first_name,
+        //     'last_name' => $last_name,
+        //     'phone' => $phone,
+        //     'type' => $type,
+        //     'queue_status' => $queue_status,
+        //     'queue_number' => $queue_number,
+        // ];
+
+        $queue = new QueueDatas;
+
+        $queue->first_name = $first_name;
+        $queue->last_name = $last_name;
+        $queue->phone = $phone;
+        $queue->type = $type;
+        $queue->queue_status = $queue_status;
+        $queue->queue_number = $queue_number;
+
+        $queue->save();
 
         return response()->json([
             "status" => "ok",
@@ -58,6 +69,13 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'ok',
             'queue' => QueueDatasResource::collection($queue_datas)
+        ], 200);
+    }
+
+    public function test(){
+        return response()->json([
+            'status' => 'ok',
+            'queue' => "TT"
         ], 200);
     }
 }

@@ -17,12 +17,12 @@ class QueueDatasFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
+            'first_name' => fake()->firstName(3),
+            'last_name' => fake()->lastName(3),
             'phone' => fake()->phoneNumber(),
-            'type' => fake()->mimeType(),
-            'queue_status' =>fake()->boolean(),
-            'queue_number' => fake()->numberBetween(1, 100)
+            'type' => fake()->name(),
+            'queue_status' => fake()->boolean(),
+            'queue_number' => fake()->boolean(),
         ];
     }
 }

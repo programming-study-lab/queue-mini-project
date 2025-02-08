@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('type');
             $table->boolean('queue_status');
-            $table->integer('queue_number'); //Queue Number
+            $table->integer('queue_number');
             $table->timestamps();
         });
     }

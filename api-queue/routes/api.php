@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\api\v1\AuthController;
+use App\Http\Controllers\Test_TestController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\TodoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +21,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route :: group(['prefix' => 'v1'], function(){
+    Route :: post ('/register',[AuthController::class, "register"]);
+});
+
+// Route::resource('/todo', TodoController::class);
+
+    Route::resource('/todo', TodoController::class);
+

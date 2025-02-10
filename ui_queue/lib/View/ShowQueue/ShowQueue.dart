@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ui_queue/Controller/QueueData/QueueDataModel.dart';
+import 'package:ui_queue/model/QueueData/QueueDataModel.dart';
 
 class ShowQueue extends StatefulWidget {
   State<ShowQueue> createState() => ShowQueueState();

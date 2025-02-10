@@ -25,7 +25,7 @@ class QueueDataModel {
 
   static Future<List<QueueDataModel>> getData() async {
     print('fetchData');
-    const String url = 'https://www.your-auction-services.com/queue-mini-project/api/v1/queue';
+    const String url = 'http://127.0.0.1:8000/api/v1/queue';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
@@ -45,5 +45,29 @@ class QueueDataModel {
 
     print(json['status']);
     return transforms;
+  }
+
+  static Future<void> deteleData(int index) async {
+    print("deleteData");
+    String url = 'http://127.0.0.1:8000/api/v1/queue_delete/$index';
+    final uri = Uri.parse(url);
+    final response = await http.delete(uri);
+    // final body = response.body;
+    // final json = jsonDecode(body);
+    // final results = json['queue'] as List<dynamic>;
+    //
+    // final transforms = results.map((e) {
+    //   return QueueDataModel(
+    //       first_name: e['first_name'],
+    //       last_name: e['last_name'],
+    //       phone: e['phone'],
+    //       type: e['type'],
+    //       queue_status: e['queue_status'],
+    //       queue_number: e['queue_number']
+    //   );
+    // },).toList();
+
+    print("Comples");
+    // return transforms;
   }
 }

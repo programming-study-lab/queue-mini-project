@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,8 +8,10 @@ import 'package:ui_queue/View/LoginView/LoginPage.dart';
 import 'package:ui_queue/View/MenuView/MenuBar.dart';
 import 'package:ui_queue/View/RegisterView/Register.dart';
 import 'package:ui_queue/View/ShowQueue/ShowQueue.dart';
+import 'package:ui_queue/model/QueueData/QueueDataModel.dart';
 import 'package:ui_queue/process/Queue.dart';
 import 'package:ui_queue/ShareData/UserData.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,17 +19,21 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  String outputQueue = test();
+  // List<QueueDataModel> queue_data = []; // ใส่ Type ตาม คลาสที่จะใช้งาน (QueueDataModel)
+  // List<QueueDataModel> de_queue_datas = []; // ใส่ Type ตาม คลาสที่จะใช้งาน (QueueDataModel)
+  // String outputQueue = test();
   Queue q = Queue();
-  var ctl = TextEditingController();
-  // UserData userData = UserData();
-  String data = '';
-  String display = 'คิวว่าง';
 
-  Future<void> readQueue() async {
-    String queue_data = await rootBundle.loadString(q.peekAll().toString());
-    print(queue_data);
-  }
+  Map<String, dynamic>? a;
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   show_one();
+  //   fetchQueueDatas();
+  //   // deQueueDatas();
+  // }
 
 
   @override
@@ -35,19 +43,17 @@ class HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-              // Image.asset('assets/11021.jpg',
-              //   fit: BoxFit.cover,height: 200,width: 1800,),
-              display_home(),
-              // display_AllQuque(),
-
+              // display_home(),
               SizedBox(height: 200, width: 1200,),
               column2(),
-              input_name(),
-              enQueue(), deQueue(),
-              queeu_all(),
               SizedBox(height: 25,),
-              column3(),routeRegisterPage(),
-              SizedBox(height: 25,)
+              column3(),
+              SizedBox(height: 25,),
+              routeRegisterPage(),
+              SizedBox(height: 25,),
+              routeShowAllQueuePage(),
+              SizedBox(height: 25,),
+              deQueue(),
             ],
           ),
       ),drawer: menu_bar(context),
@@ -91,7 +97,7 @@ class HomePageState extends State<HomePage> {
 
   Widget enQueue() => OutlinedButton(
     onPressed: () => setState(() {
-      q.enqueue(data);
+      // q.enqueue(data);
     },),
     child: Text('เข้าคิว'),
     style: TextButton.styleFrom(
@@ -99,67 +105,112 @@ class HomePageState extends State<HomePage> {
     ),
   );
 
-  Widget deQueue() => OutlinedButton(
-    onPressed: () => setState(() {
-      (q.isEmpty())?display == 'รอคิว...': display = q.dequeue() ;
-    }),
-    child: Text('เรียกคิว'),
-    style: TextButton.styleFrom(
-        foregroundColor: Colors.orange
-    ),
-  );
 
-  Widget display_home() => Text(
-      'คิวของ: ${display}', textScaler: TextScaler.linear(5),
-  );
 
-  Widget display_AllQuque() => Text(
-    'คิวทั้งหมด: ${show_queue()}', textScaler: TextScaler.linear(2),
-  );
+  // Widget display_home() {
+  //   List<dynamic> s = a!['queue'];
+  //   return Text('a', textScaler: TextScaler.linear(1.5),);
+  // }
 
-  Widget input_name() => TextField(
-    controller: ctl,
-    decoration: InputDecoration(
-      border: OutlineInputBorder(),
-      hintText: 'ชื่อ'
-    ),
-    onChanged: (value) =>
-    setState(() {
-     data = ctl.value.text;
-    })
-  );
 
-  Widget show_queue() => ListView.builder(
-    itemCount: 10,
-    itemBuilder: (context, index) => Card(
-      elevation: 10,
-      shape: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black12)
-      ),
-      child: ListTile(
-        title: Text('data'),
-      ),
-    ),
-  );
-
-  Widget queeu_all() => TextButton(
-      onPressed: () => {
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ShowQueue()))},
-      child: Text("คิวที่เหลือทั้งหมด"));
+  // Widget queeu_all() => TextButton(
+  //     onPressed: () => {
+  //       Navigator.push(context, MaterialPageRoute(
+  //           builder: (context) => ShowQueue()))},
+  //     child: Text("คิวที่เหลือทั้งหมด"));
 
   Widget routeRegisterPage() {
     return FloatingActionButton.extended(
-        onPressed: navigatorToAddPage,
+      // onPressed: navigatorToAddPage,
+      onPressed: () {
+        navigatorToAddPage();
+      },
         label: Text("เข้าคิว", textScaler: TextScaler.linear(1.5),),
     );
   }
 
   void navigatorToAddPage() {
     final route = MaterialPageRoute(
-        builder: (context) => Register(),
+      // builder: (context) => Register(),
+      builder: (context) => Register(),
     );
     Navigator.push(context, route);
+  }
+
+  Widget routeShowAllQueuePage() {
+    return FloatingActionButton.extended(
+      onPressed: navigatorToAllQueue,
+      label: Text("คิวทั้งหมด", textScaler: TextScaler.linear(1.5),),
+    );
+  }
+
+  void navigatorToAllQueue() {
+    final route = MaterialPageRoute(
+      builder: (context) => ShowQueue(),
+    );
+    Navigator.push(context, route);
+  }
+
+  // Widget deQueuev1() => OutlinedButton(
+  //   onPressed: () => setState(() {
+  //     (q.isEmpty())?display == 'รอคิว...': display = q.dequeue() ;
+  //   }),
+  //   child: Text('เรียกคิว'),
+  //   style: TextButton.styleFrom(
+  //       foregroundColor: Colors.orange
+  //   ),
+  // );
+
+  Widget deQueue() {
+    return FloatingActionButton.extended(
+      onPressed: () => {deLelete()},
+      label: Text("เรียกคิว", textScaler: TextScaler.linear(1.5),),
+    );
+  }
+
+  // Widget TestButton() {
+  //
+  //   return ElevatedButton(
+  //       onPressed: () => show_one,
+  //       child: Text("Test"));
+  // }
+
+
+  // Future<void> fetchQueueDatas() async {
+  //   final response = await QueueDataModel.getData(); //ต้องใส่ static ใน Future getData
+  //   setState(() {
+  //     queue_data = response;
+  //   });
+  // }
+  // Future<void> deQueueDatas() async {
+  //   QueueDataModel.deteleData(q.front); //ต้องใส่ static ใน Future getData
+  //
+  // }
+
+  // Future<void> show_one() async {
+  //   print("open");
+  //   String url = 'http://127.0.0.1:8000/api/v1/queue';
+  //   final uri = Uri.parse(url);
+  //   final response = await http.get(uri);
+  //   final body = response.body;
+  //   final json = jsonDecode(body) as Map<String, dynamic>;
+  //
+  //   setState(() {
+  //     a = json;
+  //   });
+  //   Map<String, dynamic> s = a!['queue'];
+  // print(s!['first_name']);
+  // print("Close");
+  // }
+
+  Future<void> deLelete() async {
+
+    print("open: ${q.getFront()}");
+    String url = 'http://127.0.0.1:8000/api/v1/queue_delete/${q.getFront()}';
+    final uri = Uri.parse(url);
+    final response = await http.delete(uri);
+    final body = response.body;
+    print("Close");
   }
 
 }

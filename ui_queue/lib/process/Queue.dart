@@ -15,12 +15,12 @@ class Queue {
   int rear = -1;
   int count =0;
 
-  Queue(){
-    this.max = 5;
-    this.data = [];
-    this.front = -1;
-    this.rear = -1;
-  }
+  // Queue(){
+  //   this.max = 5;
+  //   this.data = [];
+  //   this.front = -1;
+  //   this.rear = -1;
+  // }
 
   bool isEmpty() {
     return (this.rear == -1) || (this.front == -1);
@@ -30,26 +30,29 @@ class Queue {
     return this.rear == (this.rear, data);
   }
 
-  bool enqueue(String d) {
-    print('${d.runtimeType}: ${d}');
+  void enqueue(String d) {
+    print('---------------${d.runtimeType}: ${d}');
 
     if (this.rear < (this.max - 1)) {
       this.rear++;
-      print(this.rear);
+      print("Front enq: ${this.front}");
       this.data.insert(this.rear, d);
-      // print('Queue${this.queue(this.rear)}');
       if (this.front == -1) {
         this.front = 0;
-        print(this.front);
+        print('Front enq: ${this.front}');
       }
-      return true;
+      // return true;
     }
-    return false;
+    // return false;
   }
 
   String dequeue(){
+    print("Start Front: ${this.front}");
     String queue = "คิวว่าง";
     if (this.front != -1) {
+      print("VS Front: ${this.front}");
+      print("VS Rear: ${this.rear}");
+
       if (this.front > this.rear) {
         this.front = -1;
         this.rear = -1;
@@ -58,8 +61,10 @@ class Queue {
         queue = this.data[this.front].toString();
         print(queue);
         this.front++;
+        print("DeQ Front: ${this.front}");
       }
     }
+    print("End Front: ${this.front}");
     return queue;
   }
 
@@ -92,17 +97,9 @@ class Queue {
   //   return
   // }
 
-
-  void numTest() {
-    this.count += 1;
-  }
-  void reCount() {
-    this.count = 0;
-  }
-
-  int outNum() {
-    return this.count;
-  }
+int getFront(){
+    return this.front;
+}
 
 
 }

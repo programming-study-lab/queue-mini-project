@@ -12,12 +12,14 @@ class ShowQueue extends StatefulWidget {
 class ShowQueueState extends State<ShowQueue> {
   List<QueueDataModel> queue_data = []; // ใส่ Type ตาม คลาสที่จะใช้งาน (QueueDataModel)
   Widget build(BuildContext context){
+    fetchQueueDatas();
     return Scaffold(
       appBar: AppBar(title: Text('คิวทั้งหมด'),),
       body: ListView.builder(
           itemCount: queue_data.length,
           itemBuilder: (context, index) {
             final queue = queue_data[index];
+
             // final first_name = queue.first_name;
             // final last_name = queue.last_name;
             // final phone = queue.phone;
@@ -27,13 +29,11 @@ class ShowQueueState extends State<ShowQueue> {
             return ListTile(
               leading: CircleAvatar(
                 child: Text(queue.queue_number.toString()),),
-              title: Text('ชื่อ: ${queue.first_name.toString()} ${queue.last_name.toString()}'),
-              subtitle: Text('ชื่อนามสกุลต่อกันใช้หนึ่งตัวแปร: ${queue.fullname}'),
+              title: Text('ชื่อ: ${queue.fullname}'),
+              subtitle: Text('เบอร์โทร: ${queue.phone} ประเภท: ${queue.type}'),
             );
           },),
-      floatingActionButton: FloatingActionButton(
-        onPressed: fetchQueueDatas,
-    ),);
+      );
   }
 
   Future<void> fetchQueueDatas() async {
@@ -42,5 +42,4 @@ class ShowQueueState extends State<ShowQueue> {
       queue_data = response;
     });
   }
-
 }
